@@ -1,0 +1,10 @@
+command: ["python", "main.py"]
+env:
+  - name: DATABRICKS_WAREHOUSE_ID
+    valueFrom: sql-warehouse
+  - name: SERVING_ENDPOINT
+    valueFrom: serving-endpoint
+  - name: DEFAULT_SCHEMA
+    value: cod_coach
+  - name: AUTH_MODE
+    value: obo

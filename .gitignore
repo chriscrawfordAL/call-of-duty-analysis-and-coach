@@ -1,0 +1,13 @@
+# Personal Activision SAR data — never commit
+SAR/
+*.zip
+*ACTIVISION_ACCOUNT*.html
+scripts/tables.json
+
+# Environments / build tooling
+.venv/
+node_modules/
+.databricks/
+__pycache__/
+*.pyc
+.DS_Store

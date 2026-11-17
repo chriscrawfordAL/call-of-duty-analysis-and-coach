@@ -1,0 +1,50 @@
+bundle:
+  name: cod-coach
+
+sync:
+  exclude:
+    - "**/__pycache__"
+
+variables:
+  warehouse_id:
+    description: SQL warehouse used for reads/writes
+    default: 90a125ebed3bbfbc
+  serving_endpoint:
+    description: Chat model serving endpoint for the LLM Coach
+    default: databricks-claude-sonnet-5-5
+
+resources:
+  apps:
+    cod_coach:
+      name: cod-coach
+      description: Upload Activision SAR exports, track Call of Duty performance over time, and get LLM coaching.
+      source_code_path: ./app
+      user_api_scopes:
+        - sql
+      config:
+        command: ["python", "main.py"]
+        env:
+          - name: DATABRICKS_WAREHOUSE_ID
+            value_from: sql-warehouse
+          - name: SERVING_ENDPOINT
+            value_from: serving-endpoint
+          - name: DEFAULT_SCHEMA
+            value: cod_coach
+          - name: AUTH_MODE
+            value: obo
+      resources:
+        - name: sql-warehouse
+          sql_warehouse:
+            id: ${var.warehouse_id}
+            permission: CAN_USE
+        - name: serving-endpoint
+          serving_endpoint:
+            name: ${var.serving_endpoint}
+            permission: CAN_QUERY
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      profile: fevm-east1
